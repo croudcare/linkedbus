@@ -1,5 +1,4 @@
 require "linked_bus/version"
-require 'pry'
 
 module LinkedBus
 
