@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'linked_bus/executable'
+
+LinkedBus::Executable.new.tap do |exec| 
+  exec.parse!(ARGV)
+  exec.run!
+end

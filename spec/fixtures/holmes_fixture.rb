@@ -1,0 +1,2 @@
+class HolmesFixture
+end

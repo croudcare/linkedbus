@@ -1,0 +1,68 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <title>LinkedBus Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+
+  </head>
+
+    <body>
+    
+      <a href="https://github.com/tdantas/linkbus">
+        <img style="position: absolute; top: 0; left: 0; border: 0;" src="/images/forkme.png" alt="Fork me on GitHub">
+      </a>
+
+      <div class="container-narrow">
+        
+        <h3 class="muted">Linked Bus <small> web </small> <span id="health"> <span> </h3>
+        <hr>
+        
+        <div class="masthead clearfix">
+          <ul class="nav-pills pull-right">
+            <li class="active"><button id="test-me" href="/test/me" class="btn btn-success" > Send - Receive </button></li>
+          </ul>
+        </div>
+
+        <div id='test-container' class="alert alert-success" style="display: none;"></div>
+
+        <%= yield %>
+      </div>
+
+
+      <script src="/js/jquery.js"></script>
+      <script src="/js/bootstrap.js"></script>
+      <script src="/js/ws.js"></script>
+
+      <script type="text/javascript">
+
+        $('body').on('hidden.bs.modal', '.modal', function () {
+          $(this).removeData('bs.modal');
+        });
+
+       $('#test-me').on('click', function() {
+          $.ajax({url: "/test/me", type: "POST" });
+        });
+
+        var linkedBusWebSocket = new WS('<%= @identity %>')
+        linkedBusWebSocket.connect(onConnect);
+
+        function onConnect(socket) {
+          socket.onmessage = onMessage;
+        }
+
+        function onMessage(message) {
+          var $container = $('#test-container');
+          var html = " <strong>Hey !</strong> The data was sent and received in <strong>" + message.data + "</strong> ms";
+          $container.html(html);
+          $container.fadeIn("slow");
+          setTimeout(function(){ $container.fadeOut();}, 3000)
+        }
+
+      </script>
+
+  </body>
+</html>

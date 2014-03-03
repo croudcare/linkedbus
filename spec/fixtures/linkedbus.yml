@@ -1,0 +1,33 @@
+# Broker Options
+host:  192.168.1.1  
+port:  5555
+user:  mr_holmes
+pass:  mr_holmes_pass
+vhost: /virtual_host
+ssl:   true
+heartbeat:  100
+frame_max:  130000
+exchange:   linked_file_bus
+
+# Linkedbus Options
+logfile:    './logfile'
+env:        environment_defined
+required:
+      - file.rb
+      - second.rb
+pidfile:    './tmp/linkedbus_file.pid'
+
+# Web Options
+webmodule:  true     # activate web module ?
+web_host:   1.1.1.1   # web module server bind
+web_port:   9999      # Listen port
+ws_port:    8888      # websocket port
+ 
+ # Only used when webmodule options is true.
+ # Create a exclusive non durable queue to send and receive message 
+auto_test_queue:  'linkedbus.auto.test.queue'
+
+
+# Basic Authentication to WebModule
+web_user:  'admin_user'
+web_pass:  'secret_pass' 

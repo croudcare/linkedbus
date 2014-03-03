@@ -1,0 +1,25 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.container-narrow {
+  margin: 0 auto;
+  max-width: 950px;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+.health-success {
+  background-repeat: no-repeat;
+  background-image: url('/images/status-ok.png');
+  padding-left: 30px;
+}
+
+.health-fail {
+  background-repeat: no-repeat;
+  background-image: url('/images/status-fail.png');
+  padding-left: 30px;
+}

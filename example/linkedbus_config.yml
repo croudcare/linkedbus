@@ -1,0 +1,29 @@
+# Broker Options
+host:  localhost 
+port:  5672
+user:  guest
+pass:  guest
+vhost: /
+ssl:   true
+heartbeat:  5
+exchange:   linked_file_bus_example
+
+# Linkedbus Options
+logfile:    './logfile'
+env:        production
+pidfile:    './linkedbus_file.pid'
+
+# Web Options
+webmodule:  true     # activate web module ?
+web_host:   0.0.0.0   # web module server bind
+web_port:   8080      # Listen port
+ws_port:    8081      # websocket port
+ 
+ # Only used when webmodule options is true.
+ # Create a exclusive non durable queue to send and receive message 
+auto_test_queue:  'linkedbus.auto.test.queue'
+
+
+# Basic Authentication to WebModule
+web_user:  'admin_user'
+web_pass:  'secret_pass' 

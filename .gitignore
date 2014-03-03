@@ -1,0 +1,8 @@
+.ruby-version
+.DS_Store
+.bundle
+tmp
+*.gem
+logfile
+*.pid
+*.log
