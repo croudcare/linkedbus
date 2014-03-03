@@ -1,7 +1,5 @@
-# LinkedBus
-
-Linked Bus. This branch is a POC to understand how AMQP works.  
-linkbus.rb contains all-in-one code, but each component is inside tour own class.
+# LinkedBus (WIP)
+[![Code Climate](https://codeclimate.com/repos/5314e4d1e30ba06d7c000d10/badges/f8d7dcfc5d8fe705a19d/gpa.png)](https://codeclimate.com/repos/5314e4d1e30ba06d7c000d10/feed)
 
 Authors [Thiago Dantas](https://github.com/tdantas) && [Pedro Cunha](https://github.com/pedrocunha) 
 
@@ -38,7 +36,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    bundle exec linkedbus -r example/subscribers.rb -C example/linkedbus_config.yml --web
 
 ## Contributing
 
