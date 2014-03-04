@@ -90,7 +90,9 @@ Put in your background job system ( sidekiq, resque ), your domain is loaded ins
 
   - SSL Support: Broker and Web Module
   - Better Confidence Tests
-
+  - Logging to Syslog
+  - Enabling Environment Variables Configuration 
+  
 ## Contributing
 
 1. Fork it
