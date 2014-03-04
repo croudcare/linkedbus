@@ -37,6 +37,38 @@ module LinkedBus
       __instance__.info(message)
     end
 
+    def self.warn(message)
+      __instance__.warn(message)
+    end
+
+    def self.debug(message)
+      __instance__.debug(message)
+    end
+
+    def self.level=(_level)
+      __instance__.level = _level
+    end
+
+    def self.level
+      __instance__.level
+    end
+
+    def self.unknown(message)
+      __instance__.unknown(message)
+    end
+
+    def self.add(level, msg)
+      __instance__.add(level, msg)
+    end
+
+    def add(level, msg)
+      @logger.add(level, msg)
+    end
+
+    def unknown(message)
+      @logger.unknown(message)
+    end
+
     def info(message)
       @logger.info(message)  
     end
@@ -45,15 +77,27 @@ module LinkedBus
       @logger.fatal(message)
     end
     
+    def debug(message)
+      @logger.debug(message)
+    end
+
     def error(message)
-      @logger.info(message)
+      @logger.error(message)
+    end
+
+    def level=(_level)
+      @logger.level = _level
+    end
+
+    def level
+      @logger.level
     end
 
     private
 
     def setup
-      logger = Logger.new(@logfile)
-      logger.level = Logger::INFO
+      logger           = Logger.new(@logfile)
+      logger.level     = Logger::INFO
       logger.formatter = LinkLogBeauty.new
       logger
     end

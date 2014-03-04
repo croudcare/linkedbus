@@ -20,6 +20,7 @@ module LinkedBus
     end
 
     def start
+      Thin::Logging.logger = LinkedBus::Logging
       @server = Thin::Server.start( @config.host, @config.port, @webApplication, :signals => false)
       @webSocketServer = LinkedBus::WebSocket::Manager.start(@config.ws_port)
     end
