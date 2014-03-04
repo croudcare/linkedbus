@@ -48,11 +48,11 @@ We subscribe RabbitMQ and wait for messages.
 
 	bundle install
 
-** Start your rabbitmq **
+**Start your rabbitmq**
 
 	rabbitmq-server
 
-** Subscribing the RabbitMQ **
+**Subscribing the RabbitMQ**
 	
 	bundle exec linkedbus -r example/subscribers.rb  --web
 	
@@ -83,14 +83,16 @@ Watch out, linkedbus run inside eventmachine, slow operations will block the rea
 My advice is, your handler need some I/O (database, write file, write log) ?  
 Put in your background job system ( sidekiq, resque ), your domain is loaded inside linkedbus.
 
-** Happy Hacking ! **
+**Happy Hacking !**
 
 
 ## TODO
 
   - SSL Support: Broker and Web Module
   - Better Confidence Tests
-
+  - Logging to Syslog
+  - Enabling Environment Variables Configuration 
+  
 ## Contributing
 
 1. Fork it
