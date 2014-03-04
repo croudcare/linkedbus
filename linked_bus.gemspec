@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'evented-spec', "~> 0.9"
   spec.add_development_dependency 'multi_json'
   spec.add_development_dependency 'bunny'
+  spec.add_development_dependency 'rails'
   spec.add_development_dependency 'em-spec'
 
 
