@@ -41,7 +41,16 @@ describe LinkedBus::Executable do
       executable.parse!([ 'linkedbus', '-C', file])
     end
 
+    it 'override yaml with cli options' do
+      configuration.should_receive(:load_file) do 
+        configuration.should_receive(:update!).with({logfile: 'file_to_log'}) 
+      end
+      executable.parse!(['linkedbus', '-l', 'file_to_log', '-C', file])
+    end
+
   end
+
+
 
   it 'boot linkedbus' do
     LinkedBus.should_receive(:boot!)

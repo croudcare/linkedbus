@@ -50,12 +50,12 @@ module LinkedBus
       setup_configuration
     end
 
-    # CLI > FILE > DEFAULTS
     def run!
       LinkedBus.boot!(@config)
     end
 
     private
+      # CLI > YAML FILE > DEFAULTS
       def setup_configuration
         @config.tap do |cfg|
           cfg.load_file(@cli_options[:config_file]) if @cli_options[:config_file]
