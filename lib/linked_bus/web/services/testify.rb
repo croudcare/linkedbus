@@ -10,6 +10,7 @@ class Time
 end
 
 module LinkedBus
+
   module Service
 
     class AutoTestHandler
@@ -37,12 +38,6 @@ module LinkedBus
         register_test_queue!
       end
       
-      def register_test_queue!
-        subscriber = LinkedBus::Subscriber.new(routing_key, queue_name, handler, {:auto_delete => true, :exclusive => true})
-        LinkedBus.broker.subscribe(subscriber)
-      end
-      private :register_test_queue!
-
       def self.queue_name
         __instance__.queue_name
       end
@@ -55,7 +50,12 @@ module LinkedBus
         Service::RabbitMQ.publish(["linkedbus.auto.test"],"#{Time.now.to_ms}|#{identity}")        
       end
 
-    end
+      private
+      def register_test_queue!
+        subscriber = LinkedBus::Subscriber.new(routing_key, queue_name, handler, {:auto_delete => true, :exclusive => true})
+        LinkedBus.broker.subscribe(subscriber)
+      end
 
+    end
   end
 end
