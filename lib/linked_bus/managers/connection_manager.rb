@@ -15,7 +15,7 @@ class LinkedBus::ConnectionManager
     end
 
     @on_error_callback = proc do |conn, connection_close| 
-      LinkedBus::Notifier::Error.instance.error "Houston we got a problem"
+      LinkedBus::Notifier::Error.instance.error "Connection Manager error #{conn}"
     end
 
     @on_connection_interruption = proc do |conn, connection_close| 
