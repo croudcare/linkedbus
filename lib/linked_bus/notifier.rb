@@ -3,35 +3,41 @@ require 'linked_bus/logging'
 
 class LinkedBus::Notifier
 
-  def initialize
+  attr_reader :buffer
+  def initialize(delay = 10)
+    @delay = delay
     @buffer = []
-    @handlers = []
     @defered = false
   end
 
   def register(message)
-    @buffer.push([Time.now, message].join(" \n"))
+    @buffer.push([message].join(" \n"))
     defer_send
   end
 
-  def handler(handler)
-    @handlers.push handler
+  def handler=(handler)
+    raise "Notifier Handler must respond_to? :call" unless handler.respond_to?(:call)
+    @handler = handler 
+  end
+
+  def handler
+    @handler || proc do |buffer|
+      LinkedBus::Logging.info "Clearing notifier buffer"
+      @handler.call @buffer.join(" ")
+    end
   end
 
   private
 
   def defer_send
     return if @defered
-    LinkedBus::Logging.info "Defered messages to be sent in 10 seconds"
-    callback = proc { 
-      LinkedBus::Logging.info "Clearing notifier buffer"
-      @handlers.each do |handler|
-        handler.call @buffer.join(" ")
-      end
-      @buffer.clear
-      @defered = false 
-    }
-    ::EM.add_timer(10, &callback)
+    LinkedBus::Logging.info "Defered messages to be sent in #{@delay} seconds"
+    callback = proc do
+      handler.call(@buffer) rescue nil
+      @buffer.clear;
+      @defered = false;
+    end
+    ::EM.add_timer(@delay, callback)
     @defered = true
   end
 

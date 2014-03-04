@@ -7,7 +7,7 @@ class LinkedBus::Notifier::Error
 
   def initialize
     @manager = LinkedBus::Notifier.new
-    @manager.handler(default_handler) 
+    @manager.handler = default_handler 
   end
 
   def error(message)
