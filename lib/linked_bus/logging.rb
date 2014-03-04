@@ -25,40 +25,14 @@ module LinkedBus
       @logger = setup
     end
 
-    def self.info(message) 
-      __instance__.info message
+    def self.method_missing(method, *args, &block)
+       return __instance__.send(method, *args, &block) if self.respond_to?(method)
+       super
     end
 
-    def self.fatal(message)
-      __instance__.fatal(msg)
-    end
-
-    def self.error(message)
-      __instance__.info(message)
-    end
-
-    def self.warn(message)
-      __instance__.warn(message)
-    end
-
-    def self.debug(message)
-      __instance__.debug(message)
-    end
-
-    def self.level=(_level)
-      __instance__.level = _level
-    end
-
-    def self.level
-      __instance__.level
-    end
-
-    def self.unknown(message)
-      __instance__.unknown(message)
-    end
-
-    def self.add(level, msg)
-      __instance__.add(level, msg)
+    def self.respond_to?(method)
+      return true if [:info, :fatal, :error, :warn, :debug, :level=, :level, :unknown, :add].include?(method)
+      super
     end
 
     def add(level, msg)
