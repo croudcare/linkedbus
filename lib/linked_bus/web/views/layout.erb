@@ -47,7 +47,7 @@
           $.ajax({url: "/test/me", type: "POST" });
         });
 
-        var linkedBusWebSocket = new WS('<%= @identity %>')
+        var linkedBusWebSocket = new WS('<%= @identity %>', <%= LinkedBus.config.ws_port %>)
         linkedBusWebSocket.connect(onConnect);
 
         function onConnect(socket) {
