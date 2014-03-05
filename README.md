@@ -22,6 +22,34 @@ We are already running this WIP in Staging and Production ( Yes ! Believe or not
 
 ![Send and Receive](https://github.com/tdantas/linkedbus/raw/master/docs/images/autotest.jpg)
 
+# Diagram to better understand the code
+
+````
+
+ $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
+
+
+   bin/linkedbus
+   +
+   +-+ LinkedBus::Executable
+       +
+       +- LinkedBus.boot!
+          +
+          +- LinkedBus::Logging  ( configure the logging)
+          +- LinkedBus::Loader   ( load the dependencies - subscribers.rb for instance )
+          +- LinkedBus::Pid      ( setup the pid properly )
+          +- LinkedBus::Launcher ( launch the broker and webmodule )
+             +
+             +- LinkedBus::WebModule ( Web application module )
+             +- LinkedBus::Broker    ( Communicate with rabbitMQ )
+               +
+               +- LinkedBus::ConnectionManager ( setup the connection )
+               +- LinkedBus::ChannelManager    ( create a channel with rabbitmq )
+                  +
+                  +- LinkedBus::Consumer       ( subscribe to rabbitmq )   
+  ````
+
+
 
 ## Installation
 
@@ -84,6 +112,7 @@ My advice is, your handler need some I/O (database, write file, write log) ?
 Put in your background job system ( sidekiq, resque ), your domain is loaded inside linkedbus.
 
 **Happy Hacking !**
+
 
 
 ## TODO
