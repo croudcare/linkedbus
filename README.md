@@ -27,8 +27,7 @@ We are already running this WIP in Staging and Production ( Yes ! Believe or not
 ````
 
  $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
-
-
+ 
    bin/linkedbus
    +
    +-+ LinkedBus::Executable
