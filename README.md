@@ -22,6 +22,12 @@ We are already running this WIP in Staging and Production ( Yes ! Believe or not
 
 ![Send and Receive](https://github.com/tdantas/linkedbus/raw/master/docs/images/autotest.jpg)
 
+### Gemfile
+	
+	gem 'linked_bus', git: 'https://github.com/tdantas/linkedbus.git'
+	
+
+
 ### Source code structure
 
 ````
