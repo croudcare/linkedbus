@@ -22,7 +22,7 @@ We are already running this WIP in Staging and Production ( Yes ! Believe or not
 
 ![Send and Receive](https://github.com/tdantas/linkedbus/raw/master/docs/images/autotest.jpg)
 
-# Diagram to better understand the code
+### Source code structure
 
 ````
 
