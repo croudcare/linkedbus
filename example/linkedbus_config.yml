@@ -4,9 +4,7 @@ port:  5672
 user:  guest
 pass:  guest
 vhost: /
-ssl:   true
 heartbeat:  5
-exchange:   linked_file_bus_example
 
 # Linkedbus Options
 logfile:    './logfile'
