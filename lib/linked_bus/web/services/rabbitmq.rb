@@ -29,29 +29,35 @@ module LinkedBus
       end
 
       def self.queues
-        linkedbus_queues = LinkedBus::Subscribers.queue_names
-        client.list_queues(LinkedBus.config.vhost).select do |queue|
-          linkedbus_queues.include?(queue.name)
+        linkedbus_queues = LinkedBus::Exchanges.queue_names
+        client.list_bindings(LinkedBus.config.vhost).map do |binding|
+          if linkedbus_queues.include? binding.destination
+            Hashie::Mash.new({name: binding.destination})
+          end
+        end.compact!.uniq
+      end
+
+      def self.queue_info(queue_name)
+        client.queue_info(LinkedBus.config.vhost, queue_name)
+      end
+
+      def self.bindings(queue_name)
+        exchange_names = LinkedBus::Exchanges.names
+        client.list_queue_bindings(LinkedBus.config.vhost, queue_name).select do |binding|
+          exchange_names.include?(binding.source)
         end
-      end
-
-      def self.queue_info(name)
-        client.queue_info(LinkedBus.config.vhost, name)
-      end
-
-      def self.bindings(name)
-        bindings = client.list_queue_bindings(LinkedBus.config.vhost, name)
-        bindings.select {  |bind| bind.source == LinkedBus.config.exchange  }
       end
 
       def self.alive?
         client.aliveness_test(LinkedBus.config.vhost)
       end
 
-      def self.publish(keys, message, options = {})
-      return false if keys.nil? || keys.empty?
-        keys.each do |key| 
-          client.publish(LinkedBus.config.exchange, LinkedBus.config.vhost, message, key, options)
+      def self.publish(routing_keys, message, options = {})
+      return false if routing_keys.nil? || routing_keys.empty?
+        routing_keys.each do |exchange, keys|
+          keys.each do |key|
+            client.publish(exchange, LinkedBus.config.vhost, message, key, options)
+          end
         end
       end
 

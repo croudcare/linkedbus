@@ -1,4 +1,4 @@
-require 'linked_bus/subscribers'
+require 'linked_bus/exchanges'
 require 'linked_bus/web/websocket'
 require 'linked_bus/web/services/rabbitmq'
 require 'securerandom'
@@ -47,13 +47,14 @@ module LinkedBus
       end
 
       def self.publish(identity)
-        Service::RabbitMQ.publish(["linkedbus.auto.test"],"#{Time.now.to_ms}|#{identity}")        
+        Service::RabbitMQ.publish({'linkedbus.test.exchange' => ["linkedbus.auto.test"] },"#{Time.now.to_ms}|#{identity}")        
       end
 
       private
       def register_test_queue!
-        subscriber = LinkedBus::Subscriber.new(routing_key, queue_name, handler, {:auto_delete => true, :exclusive => true})
-        LinkedBus.broker.subscribe(subscriber)
+        exchange = LinkedBus::TopicExchange.new('linkedbus.test.exchange')
+        exchange.subscribe LinkedBus::Subscriber.new(routing_key, queue_name, handler, {:auto_delete => true, :exclusive => true})
+        LinkedBus.broker.subscribe(exchange)
       end
 
     end

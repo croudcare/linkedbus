@@ -1,5 +1,5 @@
 require 'amqp'
-require 'linked_bus/subscribers'
+require 'linked_bus/exchanges'
 require 'linked_bus/consumer'
 require 'linked_bus/logging'
 require 'linked_bus/notifier/error'
@@ -10,7 +10,6 @@ class LinkedBus::Broker
 
   def initialize(conf)
     @conf = conf
-    @exchange = @conf.exchange
     @connectionManager = LinkedBus::ConnectionManager.new
     @started = false
   end
@@ -39,10 +38,13 @@ class LinkedBus::Broker
     } 
   end
 
-  def subscribe(subscriber)
+  def subscribe(exchange)
     callback = proc {
       @channelManager.channel do |ch|
-        LinkedBus::Consumer.register(ch, ch.topic(@exchange), subscriber)
+        consumer = LinkedBus::Consumer.new(ch,exchange)
+        exchange.subscribers.each do |subscriber|
+          consumer.register(subscriber)
+        end
       end    
     }
     @started ? callback.call : start(&callback)
@@ -55,7 +57,7 @@ class LinkedBus::Broker
   def connection_callback(connection, &callback)
     @channelManager = LinkedBus::ChannelManager.new(connection)
     @channelManager.channel do |channel|
-      LinkedBus::Consumer.register(channel, channel.topic(@exchange), LinkedBus::Subscribers.instance)
+      LinkedBus::Consumer.register(channel, LinkedBus::Exchanges.instance)
       callback.call
     end
   end

@@ -45,7 +45,7 @@ module LinkedBus
           exit(0)
         end
       end
-
+      
       parser.parse!(params)
       setup_configuration
     end

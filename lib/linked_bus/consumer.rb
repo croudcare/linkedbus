@@ -10,19 +10,20 @@ require 'objspace'
 
 class LinkedBus::Consumer
 
-  def self.register(channel, exchange, subscribers)
-    subscribers = [subscribers] unless subscribers.is_a? Enumerable
-    subscribers.each do |subscriber|
-      LinkedBus::Logging.info("Registering subscriber #{subscriber}")
-      new(channel, exchange).register(subscriber)
-#    ObjectSpace.define_finalizer(x, Collected.collected)
+  def self.register(channel, exchanges)
+    exchanges = [exchanges] unless exchanges.is_a? Enumerable
+    exchanges.each do |exchange|
+      exchange.subscribers.each do |subscriber|
+        LinkedBus::Logging.info("Registering subscriber #{subscriber}")
+        new(channel, exchange).register(subscriber)
+      end
     end
   end
 
   attr_accessor :channel, :exchange
   def initialize(channel, exchange)
     @channel  = channel
-    @exchange = exchange
+    @exchange = exchange.build(@channel)
   end
 
   def register(subscriber)

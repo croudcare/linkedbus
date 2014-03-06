@@ -13,29 +13,30 @@ describe "Broker Integration" do
       cfg.user  = "guest"
       cfg.pass  = "guest"
       cfg.vhost = "/"
-      cfg.exchange = "broker_integration_test"
     end
+
     LinkedBus::Spec.disable_handler_exception!
     LinkedBus::Spec.disable_log!
     @publisher = LinkedBus::Spec.publisher(LinkedBus.config)
   end
 
   before(:each) do
-    LinkedBus::Subscribers.clear!
+    LinkedBus::Exchanges.clear!
   end
   
   it "subscriber receives the same published message" do
-
     em do 
-      handler = proc {|message|  expect(message.payload).to eql("Hello World"); done }
+      handler = proc {|message| expect(message.payload).to eql("Hello World"); done }
 
-      LinkedBus::Subscribers.register do |manager|
-        manager.subscribe "key.handler",  AMQ::Protocol::EMPTY_STRING,  handler
+      LinkedBus::Exchanges.register do |exchange|
+        exchange.topic('test_topic') do |topic|
+          topic.subscribe "key.handler",  AMQ::Protocol::EMPTY_STRING,  handler
+        end
       end
 
       LinkedBus.reconnect! {
-        EM.add_timer(0.5){
-          @publisher.publish("key.handler", "Hello World")
+        EM.add_timer(0.1) {
+          @publisher.publish('test_topic', "key.handler", "Hello World")
         }
       }
     end
@@ -44,22 +45,26 @@ describe "Broker Integration" do
   it "accepts multiple subscribers on different queues" do 
     results = []
     em do
+
       first_handler  = proc {|message| expect(message.payload).to eql("first");  results << true }
       second_handler = proc {|message| expect(message.payload).to eql("second"); results << true }
 
-      LinkedBus::Subscribers.register do |manager|
-        manager.subscribe "key.first",  AMQ::Protocol::EMPTY_STRING,  first_handler
-        manager.subscribe "key.second", AMQ::Protocol::EMPTY_STRING, second_handler
+      LinkedBus::Exchanges.register do |exchange|
+        exchange.topic('test_topic') do |topic|
+          topic.subscribe "key.first",  AMQ::Protocol::EMPTY_STRING, first_handler
+          topic.subscribe "key.second", AMQ::Protocol::EMPTY_STRING, second_handler
+        end
       end
      
       LinkedBus.reconnect! {
-        EM.add_timer(0.3) {
-          @publisher.publish("key.first", "first") 
-          @publisher.publish("key.second", "second")
+        EM.add_timer(0.1) {
+          @publisher.publish('test_topic', "key.first", "first") 
+          @publisher.publish('test_topic', "key.second", "second")
           done(1)
         }
       }
     end
+
     expect(results.length).to eql(2)
   end
 
@@ -69,18 +74,19 @@ describe "Broker Integration" do
     em do
       handler  = proc {|message| results << 10 }
 
-      LinkedBus::Subscribers.register do |manager|
-        manager.subscribe ["key.shared", "key.same"], AMQ::Protocol::EMPTY_STRING, handler
+      LinkedBus::Exchanges.register do |exchange|
+        exchange.topic('test_topic') do |topic|
+          topic.subscribe ["key.shared", "key.same"], AMQ::Protocol::EMPTY_STRING, handler
+        end
       end
      
       LinkedBus.reconnect! {
-        EM.add_timer(0.5) {
-          @publisher.publish("key.shared", "shared") 
-          @publisher.publish("key.same",   "shared") 
+        EM.add_timer(0.1) { 
+          @publisher.publish('test_topic', "key.shared", "shared") 
+          @publisher.publish('test_topic', "key.same",   "shared") 
           done(1)
         }
       }
-
     end
 
     total = results.reduce(0){ |acc, item| acc + item }
@@ -90,16 +96,20 @@ describe "Broker Integration" do
   it "accepts two subscribers on same queue" do
     result = []
     queue_name = "queue_name_#{Time.now.to_i}"
-    em do 
-      LinkedBus::Subscribers.register do |manager|
-        manager.subscribe "round",  queue_name,  proc {|message| result.push("first")}
-        manager.subscribe "round",  queue_name,  proc{| message| result.push("second")}
+
+    em do
+
+      LinkedBus::Exchanges.register do |exchange|
+        exchange.topic('test_topic') do |topic|
+          topic.subscribe "round",  queue_name,  proc {|message| result.push("first")}
+          topic.subscribe "round",  queue_name,  proc{| message| result.push("second")}
+        end
       end
       
       LinkedBus.reconnect! {
-        EM.add_timer(0.5) {
-          @publisher.publish("round", "message") 
-          @publisher.publish("round", "message") 
+        EM.add_timer(0.1) {
+          @publisher.publish('test_topic', "round", "message") 
+          @publisher.publish('test_topic', "round", "message") 
           done(1)
         }
       }
