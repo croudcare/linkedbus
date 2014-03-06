@@ -14,7 +14,7 @@ We are already running this WIP in Staging and Production ( Yes ! Believe or not
 	
 
 
- We are fininshing the gem and as soon as possible we publish to rubygems  
+ We are finishing the gem and as soon as possible we publish to rubygems  
  For now, git clone is your best friend
  
 ## Usage
