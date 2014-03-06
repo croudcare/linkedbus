@@ -105,7 +105,7 @@ How to verify ?
  - Programatically publishing message to rabbitMQ ( use [Bunny](https://github.com/ruby-amqp/bunny) ). Publish to linkedbus exchange with key defined in **example/subscribers.rb**
     
 
-### How to load my rails domain insinde linkedbus ?
+### How to load my rails domain inside linkedbus ?
 Go to [Rails Blog](https://github.com/tdantas/linkedbus/tree/master/example/blog) example and order (yes master) linkedbus to load current folder.
 
 	cd example/blog
