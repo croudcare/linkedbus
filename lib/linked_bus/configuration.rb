@@ -1,6 +1,5 @@
 require 'ostruct'
 require 'yaml'
-require 'pry'
 
 class LinkedBus::Configuration
 
