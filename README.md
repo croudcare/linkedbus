@@ -109,6 +109,7 @@ How to verify ?
 Go to [Rails Blog](https://github.com/tdantas/linkedbus/tree/master/example/blog) example and order (yes master) linkedbus to load current folder.
 
 	cd example/blog
+	bundle install
 	bundle exec linkedbus -r . --web
 
 Watch out, linkedbus run inside eventmachine, slow operations will block the reactor and new incoming messages will have to wait slow operation to finish.
