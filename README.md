@@ -70,9 +70,6 @@ Go to [Rails Blog](https://github.com/tdantas/linkedbus/tree/master/example/blog
 
 Watch out, linkedbus run inside eventmachine, slow operations will block the reactor and new incoming messages will have to wait slow operation to finish.
 
-My advice is, your handler need some I/O (database, write file, write log) ?  
-Put in your background job system ( sidekiq, resque ), your domain is loaded inside linkedbus.
-
 **Happy Hacking !**
 
 
