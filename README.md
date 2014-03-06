@@ -22,8 +22,41 @@ We are already running this WIP in Staging and Production ( Yes ! Believe or not
 
 ![Send and Receive](https://github.com/tdantas/linkedbus/raw/master/docs/images/autotest.jpg)
 
+### Source code structure
+
+````
+
+ $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
+ 
+   bin/linkedbus
+   +
+   +-+ LinkedBus::Executable
+       +
+       +- LinkedBus.boot!
+          +
+          +- LinkedBus::Logging  ( configure the logging)
+          +- LinkedBus::Loader   ( load the dependencies - subscribers.rb for instance )
+          +- LinkedBus::Pid      ( setup the pid properly )
+          +- LinkedBus::Launcher ( launch the broker and webmodule )
+             +
+             +- LinkedBus::WebModule ( Web application module )
+             +- LinkedBus::Broker    ( Communicate with rabbitMQ )
+               +
+               +- LinkedBus::ConnectionManager ( setup the connection )
+               +- LinkedBus::ChannelManager    ( create a channel with rabbitmq )
+                  +
+                  +- LinkedBus::Consumer       ( subscribe to rabbitmq )   
+  ````
+
+
 
 ## Installation
+
+#### Gemfile
+	
+	gem 'linked_bus', git: 'https://github.com/tdantas/linkedbus.git'
+	
+
 
  We are fininshing the gem and as soon as possible we publish to rubygems  
  For now, git clone is your best friend
@@ -72,10 +105,11 @@ How to verify ?
  - Programatically publishing message to rabbitMQ ( use [Bunny](https://github.com/ruby-amqp/bunny) ). Publish to linkedbus exchange with key defined in **example/subscribers.rb**
     
 
-### How to load my rails domain insinde linkedbus ?
+### How to load my rails domain inside linkedbus ?
 Go to [Rails Blog](https://github.com/tdantas/linkedbus/tree/master/example/blog) example and order (yes master) linkedbus to load current folder.
 
 	cd example/blog
+	bundle install
 	bundle exec linkedbus -r . --web
 
 Watch out, linkedbus run inside eventmachine, slow operations will block the reactor and new incoming messages will have to wait slow operation to finish.
@@ -84,6 +118,7 @@ My advice is, your handler need some I/O (database, write file, write log) ?
 Put in your background job system ( sidekiq, resque ), your domain is loaded inside linkedbus.
 
 **Happy Hacking !**
+
 
 
 ## TODO
