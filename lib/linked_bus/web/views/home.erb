@@ -2,27 +2,22 @@
   <thead>
     <tr>
       <th> </th>
-      <th>Queue Name</th>
-      <th>Consumers</th>
-      <th>Status</th>
-      <th>Last used</th>
       <th> </th>
-
+      <th> </th>
     </tr>
   </thead>
   <tbody>
     <% @queues.each do |queue| %>
+
       <tr id="<%=queue.name%>">
-        <td></td>
+        <td> </td>
         <td><%= queue.name %></td>
-        <td><%= queue.consumers %></td>
-        <td><%= queue.status %></td>
-        <td><%= queue.idle_since %></td>
-        <td> 
-          <a href="/queues/<%=queue.name%>" class="btn btn-primary" data-toggle="modal" data-target="#queue-info">View</a>
+        <td>
+          <a href="/queues/<%=queue.name%>" class="btn btn-primary" data-toggle="modal" data-target="#queue-info"> View </a>
           <a href="/publish/<%=queue.name%>/new" class="btn btn-primary" data-toggle="modal" data-target="#queue-publish"> Publish </a>
         </td>
       </tr>  
+
     <% end %>
   </tbody>
 </table>

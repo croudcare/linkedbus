@@ -8,52 +8,44 @@ describe LinkedBus::Executable do
 
   subject(:executable) { LinkedBus::Executable.new(configuration) }
 
-  context 'cli options' do
+  context 'command line interface options #parse!' do
 
     it 'required file' do
       configuration.should_receive(:update!).with({required: ['file_executable.rb']}) 
       executable.parse!(['linkedbus', '-r', 'file_executable.rb'])
     end
 
-    it 'enviroment' do
+    it 'environment' do
       configuration.should_receive(:update!).with({env: 'xxx'}) 
       executable.parse!(['linkedbus', '-e', 'xxx'])
     end
 
-    it 'logfile file' do
+    it 'logfile' do
       configuration.should_receive(:update!).with({logfile: 'file_to_log'}) 
       executable.parse!(['linkedbus', '-l', 'file_to_log'])
     end
 
     it 'enable web' do 
-      configuration.should_receive(:update!).with({webmodule: true}) 
+      configuration.should_receive(:update!).with({ webmodule: true }) 
       executable.parse!(['linkedbus', '--web', true])
     end
 
- end
-
-  context 'load yaml file' do
-    
-    let(:file) { File.expand_path(File.join(File.dirname(__FILE__), './fixtures/linkedbus.yml')) }
-
-    it 'changes linkedbus configuration based on yaml file' do
-      configuration.should_receive(:load_file)
-      executable.parse!([ 'linkedbus', '-C', file])
+    it 'config file' do
+      configuration.should_receive(:load_file).with('path/file')
+      executable.parse!([ 'linkedbus', '-C', 'path/file'])
     end
 
     it 'override yaml with cli options' do
       configuration.should_receive(:load_file) do 
-        configuration.should_receive(:update!).with({logfile: 'file_to_log'}) 
+        configuration.should_receive(:update!).with({ logfile: 'file_to_log' }) 
       end
-      executable.parse!(['linkedbus', '-l', 'file_to_log', '-C', file])
+      executable.parse!(['linkedbus', '-l', 'file_to_log', '-C', 'path/file'])
     end
 
   end
 
-
-
   it 'boot linkedbus' do
-    LinkedBus.should_receive(:boot!)
+    LinkedBus.should_receive(:boot!).with(configuration)
     executable.run!
   end
 

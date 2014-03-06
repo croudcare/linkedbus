@@ -4,14 +4,8 @@ module LinkedBus
 
   module Spec
 
-    def subscribe(key, queue, handler)
-      LinkedBus::Subscribers.register do |manager|
-        manager.subscribe key, queue, handler
-      end
-    end
-
     def clear_subscribers!
-      LinkedBus::Subscribers.clear!
+      LinkedBus::Exchanges.clear!
     end
 
     def stop!
@@ -19,7 +13,7 @@ module LinkedBus
     end
 
     def publisher(config)
-      Publisher.new(config.user, config.pass, config.vhost, config.exchange)
+      Publisher.new(config.user, config.pass, config.vhost)
     end
 
     def disable_handler_exception!

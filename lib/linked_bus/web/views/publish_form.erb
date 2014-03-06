@@ -18,10 +18,11 @@
             <h3 class="panel-title"> Routing Keys </h3>
           </div>
           <div class="panel-body">
-            <% @bindings.each do |bind|%>
+            <% @bindings.each do |bind| %>
               <div class="checkbox" >
                 <label>
-                  <input type="checkbox" value="<%= bind.routing_key %>" name="keys[]"> <%= bind.routing_key %>
+                  <input type="checkbox" value="<%= bind.routing_key %>" name="keys[<%=bind.source%>][]"> <%= bind.routing_key %> 
+                  <small> from <strong><%= bind.source %></strong> </small>
                 </label>
                </div>
             <%end%>

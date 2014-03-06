@@ -8,4 +8,5 @@ describe LinkedBus::Consumer do
   it "register new subscriber" do
   end
 
+  
 end

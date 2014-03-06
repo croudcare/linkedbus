@@ -53,7 +53,7 @@ module LinkedBus
       erb :publish_form, :layout => false
     end
 
-    post '/publish/:queue_name' do 
+    post '/publish/:queue_name' do
       if Service::RabbitMQ.publish(params[:keys], params[:message])
         status 200
       else

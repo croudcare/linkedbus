@@ -7,7 +7,10 @@ vhost: /virtual_host
 ssl:   true
 heartbeat:  100
 frame_max:  130000
-exchange:   linked_file_bus
+exchange:
+  name: linked_file_bus
+  options: 
+    - durable
 
 # Linkedbus Options
 logfile:    './logfile'

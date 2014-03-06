@@ -8,26 +8,27 @@ describe LinkedBus::Configuration do
 
     let(:config) { LinkedBus::Configuration.new }
     
-    its(:host)            { expect(config.host).to eql('localhost')}
-    its(:port)            { expect(config.port).to eql(5672)}
-    its(:user)            { expect(config.user).to eql('guest')}
-    its(:pass)            { expect(config.pass).to eql('guest')}
-    its(:vhost)           { expect(config.vhost).to eql('/')}
-    its(:exchange)        { expect(config.exchange).to eql('linkedbus')}
-    its(:ssl)             { expect(config.ssl).to eql(false)}
-    its(:heartbeat)       { expect(config.heartbeat).to eql(10)}
-    its(:frame_max)       { expect(config.frame_max).to eql(131072)}
-    its(:logfile)         { expect(config.logfile).to eql(STDOUT)}
-    its(:env)             { expect(config.env).to eql('production')}
-    its(:web_host)        { expect(config.web_host).to eql('0.0.0.0')}
-    its(:web_port)        { expect(config.web_port).to eql(8080)}
-    its(:required)        { expect(config.required).to eql([]) }
-    its(:webmodule)       { expect(config.webmodule).to eql(false)}
-    its(:pidfile)         { expect(config.pidfile).to eql('./tmp/linkedbus.pid')}
-    its(:auto_test_queue) { expect(config.auto_test_queue).to eql('linkedbus.auto.test')}
-    its(:ws_port)         { expect(config.ws_port).to eql(8081) }
-    its(:web_user)        { expect(config.web_user).to eql('admin') }
-    its(:web_pass)        { expect(config.web_pass).to eql('secret') }
+    its(:host)             { expect(config.host).to eql('localhost')}
+    its(:port)             { expect(config.port).to eql(5672)}
+    its(:user)             { expect(config.user).to eql('guest')}
+    its(:pass)             { expect(config.pass).to eql('guest')}
+    its(:vhost)            { expect(config.vhost).to eql('/')}
+    its(:exchange_name)    { expect(config.exchange_name).to eql('linkedbus')}
+    its(:exchange_options) { expect(config.exchange_options).to eql({})}
+    its(:ssl)              { expect(config.ssl).to eql(false)}
+    its(:heartbeat)        { expect(config.heartbeat).to eql(10)}
+    its(:frame_max)        { expect(config.frame_max).to eql(131072)}
+    its(:logfile)          { expect(config.logfile).to eql(STDOUT)}
+    its(:env)              { expect(config.env).to eql('production')}
+    its(:web_host)         { expect(config.web_host).to eql('0.0.0.0')}
+    its(:web_port)         { expect(config.web_port).to eql(8080)}
+    its(:required)         { expect(config.required).to eql([]) }
+    its(:webmodule)        { expect(config.webmodule).to eql(false)}
+    its(:pidfile)          { expect(config.pidfile).to eql('./tmp/linkedbus.pid')}
+    its(:auto_test_queue)  { expect(config.auto_test_queue).to eql('linkedbus.auto.test')}
+    its(:ws_port)          { expect(config.ws_port).to eql(8081) }
+    its(:web_user)         { expect(config.web_user).to eql('admin') }
+    its(:web_pass)         { expect(config.web_pass).to eql('secret') }
 
   end
   
@@ -60,9 +61,14 @@ describe LinkedBus::Configuration do
       expect(config.vhost).to eql('watson')
     end
 
-    its(:exchange) do 
-      config.exchange = 'moriarty'
-      expect(config.exchange).to eql('moriarty')
+    its(:exchange_name) do 
+      config.exchange_name = 'moriarty'
+      expect(config.exchange_name).to eql('moriarty')
+    end
+
+    its(:exchange_options) do 
+      config.exchange_options = {'durable' => true }
+      expect(config.exchange_options).to eql({ 'durable' => true })
     end
 
     its(:ssl) do 
@@ -154,15 +160,15 @@ describe LinkedBus::Configuration do
 
       let(:broker) { configuration.broker }
 
-      its(:host)      { expect(broker.host).to       eql('localhost') }
-      its(:port)      { expect(broker.port).to       eql(5672) }
-      its(:user)      { expect(broker.user).to       eql('guest') }
-      its(:pass)      { expect(broker.pass).to       eql('guest') }
-      its(:vhost)     { expect(broker.vhost).to      eql('/') }
-      its(:ssl)       { expect(broker.ssl).to        eql(false) }
-      its(:heartbeat) { expect(broker.heartbeat).to  eql(10) }
-      its(:frame_max) { expect(broker.frame_max).to  eql(131072) }
-      its(:exchange)  { expect(broker.exchange).to   eql('linkedbus') }
+      its(:host)          { expect(broker.host).to       eql('localhost') }
+      its(:port)          { expect(broker.port).to       eql(5672) }
+      its(:user)          { expect(broker.user).to       eql('guest') }
+      its(:pass)          { expect(broker.pass).to       eql('guest') }
+      its(:vhost)         { expect(broker.vhost).to      eql('/') }
+      its(:ssl)           { expect(broker.ssl).to        eql(false) }
+      its(:heartbeat)     { expect(broker.heartbeat).to  eql(10) }
+      its(:frame_max)     { expect(broker.frame_max).to  eql(131072) }
+      its(:exchange_name) { expect(broker.exchange_name).to   eql('linkedbus') }
 
     end
   end
@@ -181,7 +187,8 @@ describe LinkedBus::Configuration do
     its(:user)            { expect(@configuration.user).to eql('mr_holmes') }
     its(:pass)            { expect(@configuration.pass).to eql('mr_holmes_pass') }
     its(:vhost)           { expect(@configuration.vhost).to eql('/virtual_host') }
-    its(:exchange)        { expect(@configuration.exchange).to eql('linked_file_bus') }
+    its(:exchange_name)   { expect(@configuration.exchange_name).to eql('linked_file_bus') }
+    its(:exchange_options){ expect(@configuration.exchange_options).to eql({ "durable" => true })}
     its(:ssl)             { expect(@configuration.ssl).to eql(true) }
     its(:heartbeat)       { expect(@configuration.heartbeat).to eql(100) }
     its(:frame_max)       { expect(@configuration.frame_max).to eql(130000) }

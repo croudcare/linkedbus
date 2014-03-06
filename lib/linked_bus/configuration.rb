@@ -1,11 +1,41 @@
 require 'ostruct'
 require 'yaml'
+require 'pry'
 
 class LinkedBus::Configuration
 
+  class YAMLLoader
+    
+    def self.run(path)
+      normalize YAML.load_file(path)
+    end
+
+    private
+    def self.normalize(config)
+      exchange_cfg = exchange_normalize(config['exchange'] || {} )
+      config.delete 'exchange'
+      config.merge! exchange_cfg
+    end
+
+
+    def self.exchange_normalize(config)
+      exchange = {}
+      exchange['exchange_name'] = config['name']
+      
+      options = config['options'] || []
+      exchange['exchange_options'] = options.reduce({}) do |acc, item|
+        acc[item] = true
+        acc
+      end
+
+      exchange
+    end
+
+  end
+
   attr_accessor :host, :port, :user, :pass, :vhost, :ssl, :heartbeat,
                 :frame_max, :logfile, :env, :web_host, :web_port, 
-                :exchange, :required, :webmodule, :pidfile, :auto_test_queue,
+                :exchange_name, :exchange_options, :required, :webmodule, :pidfile, :auto_test_queue,
                 :ws_port, :web_user, :web_pass
 
   def initialize
@@ -16,8 +46,8 @@ class LinkedBus::Configuration
     setup(options)
   end
 
-  def load_file(path)
-    update!(YAML.load_file(path))
+  def load_file(path, loader = YAMLLoader)
+    update!(loader.run(path))
   end
 
   def web
@@ -45,7 +75,8 @@ class LinkedBus::Configuration
       :ssl       => ssl,
       :heartbeat => heartbeat,
       :frame_max => frame_max,
-      :exchange  => exchange
+      :exchange_name  =>   exchange_name,
+      :exchange_options => exchange_options
     }
 
     OpenStruct.new(cfg)
@@ -67,7 +98,8 @@ class LinkedBus::Configuration
       :env       => "production",
       :web_host   => "0.0.0.0",
       :web_port   => 8080,
-      :exchange  => "linkedbus",
+      :exchange_name  => "linkedbus",
+      :exchange_options  => {},
       :required   => [],
       :webmodule => false,
       :pidfile   => './tmp/linkedbus.pid',
@@ -83,4 +115,5 @@ class LinkedBus::Configuration
       self.send("#{key}=", value)
     end
   end
+
 end
