@@ -6,24 +6,6 @@ Authors [Thiago Dantas](https://github.com/tdantas) && [Pedro Cunha](https://git
 
 We are already running this WIP in Staging and Production ( Yes ! Believe or not we are already using it. )
 
-#### Web Interface
-
-![Web UI](https://github.com/tdantas/linkedbus/raw/master/docs/images/queues.jpg)    
-
-#### Queue Details 
-
-![Queue Detail](https://github.com/tdantas/linkedbus/raw/master/docs/images/queue_detail.jpg)  
-
-#### Publish Message
-
-![Publishing Message](https://github.com/tdantas/linkedbus/raw/master/docs/images/publishing.jpg)  
-
-#### Auto Testing
-
-![Send and Receive](https://github.com/tdantas/linkedbus/raw/master/docs/images/autotest.jpg)
-
-### Source code structure
-
 ````
 
  $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
