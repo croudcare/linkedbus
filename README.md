@@ -6,32 +6,6 @@ Authors [Thiago Dantas](https://github.com/tdantas) && [Pedro Cunha](https://git
 
 We are already running this WIP in Staging and Production ( Yes ! Believe or not we are already using it. )
 
-````
-
- $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
- 
-   bin/linkedbus
-   +
-   +-+ LinkedBus::Executable
-       +
-       +- LinkedBus.boot!
-          +
-          +- LinkedBus::Logging  ( configure the logging)
-          +- LinkedBus::Loader   ( load the dependencies - subscribers.rb for instance )
-          +- LinkedBus::Pid      ( setup the pid properly )
-          +- LinkedBus::Launcher ( launch the broker and webmodule )
-             +
-             +- LinkedBus::WebModule ( Web application module )
-             +- LinkedBus::Broker    ( Communicate with rabbitMQ )
-               +
-               +- LinkedBus::ConnectionManager ( setup the connection )
-               +- LinkedBus::ChannelManager    ( create a channel with rabbitmq )
-                  +
-                  +- LinkedBus::Consumer       ( subscribe to rabbitmq )   
-  ````
-
-
-
 ## Installation
 
 #### Gemfile
@@ -110,6 +84,36 @@ Put in your background job system ( sidekiq, resque ), your domain is loaded ins
   - Logging to Syslog
   - Enabling Environment Variables Configuration 
   
+#### Want to understand the code ?
+
+What happen when I call linkedbus binary ?
+
+````
+ $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
+ 
+   bin/linkedbus
+   +
+   +-+ LinkedBus::Executable
+       +
+       +- LinkedBus.boot!
+          +
+          +- LinkedBus::Logging  ( configure the logging)
+          +- LinkedBus::Loader   ( load the dependencies - subscribers.rb for instance )
+          +- LinkedBus::Pid      ( setup the pid properly )
+          +- LinkedBus::Launcher ( launch the broker and webmodule )
+             +
+             +- LinkedBus::WebModule ( Web application module )
+             +- LinkedBus::Broker    ( Communicate with rabbitMQ )
+               +
+               +- LinkedBus::ConnectionManager ( setup the connection )
+               +- LinkedBus::ChannelManager    ( create a channel with rabbitmq )
+                  +
+                  +- LinkedBus::Consumer       ( subscribe to rabbitmq )   
+  ````
+
+
+
+
 ## Contributing
 
 1. Fork it
