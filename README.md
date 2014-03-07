@@ -90,7 +90,7 @@ What happen when I call linkedbus binary ?
  
    bin/linkedbus
    +
-   +-+ LinkedBus::Executable
+   +-+ LinkedBus::Executable ( setup the configuration from cli , yaml and defaults )
        +
        +- LinkedBus.boot!
           +
