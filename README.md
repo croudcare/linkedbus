@@ -1,6 +1,8 @@
 # LinkedBus (WIP)
 [![Code Climate](https://codeclimate.com/repos/5314e4d1e30ba06d7c000d10/badges/f8d7dcfc5d8fe705a19d/gpa.png)](https://codeclimate.com/repos/5314e4d1e30ba06d7c000d10/feed)
 [![Build Status](https://travis-ci.org/tdantas/linkedbus.png?branch=master)](https://travis-ci.org/tdantas/linkedbus)
+[![Dependency Status](https://gemnasium.com/tdantas/linkedbus.png)](https://gemnasium.com/tdantas/linkedbus)
+
 
 Authors [Thiago Dantas](https://github.com/tdantas) && [Pedro Cunha](https://github.com/pedrocunha)   
 
