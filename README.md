@@ -1,36 +1,12 @@
 # LinkedBus (WIP)
 [![Code Climate](https://codeclimate.com/repos/5314e4d1e30ba06d7c000d10/badges/f8d7dcfc5d8fe705a19d/gpa.png)](https://codeclimate.com/repos/5314e4d1e30ba06d7c000d10/feed)
 [![Build Status](https://travis-ci.org/tdantas/linkedbus.png?branch=master)](https://travis-ci.org/tdantas/linkedbus)
+[![Dependency Status](https://gemnasium.com/tdantas/linkedbus.png)](https://gemnasium.com/tdantas/linkedbus)
+
 
 Authors [Thiago Dantas](https://github.com/tdantas) && [Pedro Cunha](https://github.com/pedrocunha)   
 
 We are already running this WIP in Staging and Production ( Yes ! Believe or not we are already using it. )
-
-````
-
- $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
- 
-   bin/linkedbus
-   +
-   +-+ LinkedBus::Executable
-       +
-       +- LinkedBus.boot!
-          +
-          +- LinkedBus::Logging  ( configure the logging)
-          +- LinkedBus::Loader   ( load the dependencies - subscribers.rb for instance )
-          +- LinkedBus::Pid      ( setup the pid properly )
-          +- LinkedBus::Launcher ( launch the broker and webmodule )
-             +
-             +- LinkedBus::WebModule ( Web application module )
-             +- LinkedBus::Broker    ( Communicate with rabbitMQ )
-               +
-               +- LinkedBus::ConnectionManager ( setup the connection )
-               +- LinkedBus::ChannelManager    ( create a channel with rabbitmq )
-                  +
-                  +- LinkedBus::Consumer       ( subscribe to rabbitmq )   
-  ````
-
-
 
 ## Installation
 
@@ -40,7 +16,7 @@ We are already running this WIP in Staging and Production ( Yes ! Believe or not
 	
 
 
- We are fininshing the gem and as soon as possible we publish to rubygems  
+ We are finishing the gem and as soon as possible we publish to rubygems  
  For now, git clone is your best friend
  
 ## Usage
@@ -96,9 +72,6 @@ Go to [Rails Blog](https://github.com/tdantas/linkedbus/tree/master/example/blog
 
 Watch out, linkedbus run inside eventmachine, slow operations will block the reactor and new incoming messages will have to wait slow operation to finish.
 
-My advice is, your handler need some I/O (database, write file, write log) ?  
-Put in your background job system ( sidekiq, resque ), your domain is loaded inside linkedbus.
-
 **Happy Hacking !**
 
 
@@ -110,6 +83,36 @@ Put in your background job system ( sidekiq, resque ), your domain is loaded ins
   - Logging to Syslog
   - Enabling Environment Variables Configuration 
   
+#### Want to understand the code ?
+
+What happen when I call linkedbus binary ?
+
+````
+ $ bundle exec linkedbus -C linkedbus.yml -r subscribers.rb --web
+ 
+   bin/linkedbus
+   +
+   +-+ LinkedBus::Executable ( setup the configuration from cli , yaml and defaults )
+       +
+       +- LinkedBus.boot!
+          +
+          +- LinkedBus::Logging  ( configure the logging)
+          +- LinkedBus::Loader   ( load the dependencies - subscribers.rb for instance )
+          +- LinkedBus::Pid      ( setup the pid properly )
+          +- LinkedBus::Launcher ( launch the broker and webmodule )
+             +
+             +- LinkedBus::WebModule ( Web application module )
+             +- LinkedBus::Broker    ( Communicate with rabbitMQ )
+               +
+               +- LinkedBus::ConnectionManager ( setup the connection )
+               +- LinkedBus::ChannelManager    ( create a channel with rabbitmq )
+                  +
+                  +- LinkedBus::Consumer       ( subscribe to rabbitmq )   
+  ````
+
+
+
+
 ## Contributing
 
 1. Fork it
