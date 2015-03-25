@@ -6,3 +6,5 @@ tmp
 logfile
 *.pid
 *.log
+
+.rvmrc
