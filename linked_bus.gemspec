@@ -30,9 +30,9 @@ Gem::Specification.new do |spec|
 
 
   spec.add_dependency 'em-websocket'
-  spec.add_dependency 'amqp', '~> 1.3.0'
+  spec.add_dependency 'amqp', '~> 1.5.0'
   spec.add_dependency 'thin', '~> 1.6.1'
   spec.add_dependency 'sinatra', '~> 1.4.4'
   spec.add_dependency 'rack-fiber_pool', '~> 0.9.3'
-  spec.add_dependency 'rabbitmq_http_api_client', '~> 1.0.0'
+  spec.add_dependency 'rabbitmq_http_api_client', '~> 1.4.0'
 end
